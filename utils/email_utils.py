@@ -22,27 +22,6 @@ def send_email(subject, body):
     # Disconnect from the server
     server.quit()
 
-def wrap_text(text, font, max_width):
-    """
-    Wrap text to fit within a specified width.
-    """
-    words = text.split(' ')
-    wrapped_lines = []
-    current_line = words[0]
-   
-    for word in words[1:]:
-        # Test the width with the new word added
-        test_line = current_line + ' ' + word
-        # If the width with the new word doesn't exceed the max width
-        if font.size(test_line)[0] <= max_width:
-            current_line = test_line
-        else:
-            wrapped_lines.append(current_line)
-            current_line = word
-
-    wrapped_lines.append(current_line)
-    return '\n'.join(wrapped_lines)
-
 # extract body from email
 def get_body(msg):
     if msg.is_multipart():
