@@ -1,10 +1,15 @@
 import pygame
 import math
-from email_utils import wrap_text, send_email
+from utils.email_utils import wrap_text
 
 global subject, body
 subject = ''
 body = ''
+
+# Set the dimensions of the screen
+width, height = 800, 480
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Kam Kam')
 
 def render_text_with_border(text, font, text_color, border_color):
     # Render the text in the border color
@@ -22,23 +27,25 @@ def update_vars(new_subject, new_body):
     global subject, body
     subject = new_subject
     body = new_body
+    
+# static 'surfaces' for rainbow - should help with performance
+rainbow_surface = pygame.Surface((width, height), pygame.SRCALPHA)
+rectangle_surface = pygame.Surface((width, height // 2), pygame.SRCALPHA)
+rectangle_surface.fill((255, 255, 255))
         
 # Load images once outside of the display_email function
-mail_icon = pygame.image.load('new_mail.jpeg')
-mail_icon = pygame.transform.scale(mail_icon, (480, 320))
-background = pygame.image.load("background_1.jpeg")
-background = pygame.transform.scale(background, (480, 320))
+mail_icon = pygame.image.load('images/new_mail.jpeg')
+mail_icon = pygame.transform.scale(mail_icon, (width, height))
+# background = pygame.image.load("background_1.jpeg")
+# background = pygame.transform.scale(background, (width, height))
 
 
 def display_email():
     pygame.init()
     
-    # Set the dimensions of the screen
-    width, height = 480, 320
-    screen = pygame.display.set_mode((width, height))
-    
     # keep track of which screen to show
     email_displayed = False
+
     # for the new mail animation
     animation_counter = 0
     animation_speed = 0.035
@@ -64,16 +71,6 @@ def display_email():
     GREY = (250, 250, 250)
     
     while running:
-        # ... at the beginning of the while loop ...
-        if body != prev_body:
-            email_displayed = False
-            prev_body = body
-
-            # Render the body text into surfaces
-            wrapped_body = wrap_text(body, font_body, width - 20)
-            body_lines = wrapped_body.split('\n')
-            body_surfaces = [render_text_with_border(line, font_body, BLACK, WHITE) for line in body_lines]
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -81,7 +78,6 @@ def display_email():
                 return  # Exit the function if the window is closed
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if not email_displayed:
-                    print('right one')
                     email_displayed = True
                     # send_email(subject, body)
                 else: 
@@ -92,6 +88,19 @@ def display_email():
                 dragging = False
             elif event.type == pygame.MOUSEMOTION and dragging:
                 y_offset = last_y_offset + (drag_start_y - event.pos[1])
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
+                pygame.quit()
+
+        # ... at the beginning of the while loop ...
+        if body != prev_body:
+            email_displayed = False
+            prev_body = body
+
+            # Render the body text into surfaces
+            wrapped_body = wrap_text(body, font_body, width - 20)
+            body_lines = wrapped_body.split('\n')
+            body_surfaces = [render_text_with_border(line, font_body, WHITE, BLACK) for line in body_lines]
 
         # Draw the background and body text on the screen
         if email_displayed:

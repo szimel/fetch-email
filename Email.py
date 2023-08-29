@@ -1,7 +1,7 @@
 import time
 from multiprocessing import Process
-from display_email import display_email, update_vars
-from email_utils import get_body, get_subject, get_email
+from background.display_email import display_email, update_vars
+from utils.email_utils import get_body, get_subject, get_email
 
 def email_check():
     while True:
