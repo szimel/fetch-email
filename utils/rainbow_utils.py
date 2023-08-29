@@ -10,7 +10,7 @@ rain_right = []
 rain_left = []
 
 # Load the heart and cloud images
-heart_image = pygame.image.load('test_heart2.png')
+heart_image = pygame.image.load('images/test_heart2.png')
 heart_image = pygame.transform.scale(heart_image, (22, 22))
 
 def colorize(image, new_color):

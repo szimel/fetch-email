@@ -8,6 +8,11 @@ height = 480
 screen = pygame.display.set_mode((width, height))
 
 
+# static 'surfaces' for rainbow - should help with performance
+rainbow_surface = pygame.Surface((width, height), pygame.SRCALPHA)
+rectangle_surface = pygame.Surface((width, height // 2), pygame.SRCALPHA)
+rectangle_surface.fill((255, 255, 255))
+
 running = True
 
 # Clear the screen
