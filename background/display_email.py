@@ -31,7 +31,7 @@ def display_email(shared_dict):
     animation_amplitude = 5  # This controls how "high" the hop is.
     
     # Define fonts for the body text
-    font_body = pygame.font.SysFont('notosansmono', 22)
+    font_body = pygame.font.SysFont('notosansmono', 24)
     
     # Variables for scrolling and touch dragging
     y_offset = 0
