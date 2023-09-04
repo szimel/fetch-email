@@ -2,15 +2,9 @@ import imaplib
 import smtplib
 import email
 from email.header import decode_header
-import os
-from dotenv import load_dotenv
 
-# Load environment variables from prod.env
-load_dotenv('prod.env')
-
-# Get the username and password from the environment variables
-username = os.getenv('EMAIL_USERNAME')
-password = os.getenv('EMAIL_PASSWORD')
+username = "kamandtrix@gmail.com"
+password = "svmfjncazrvivceo"
 
 def send_email(subject, body):
     receiver_email = "zamdaman9999@gmail.com"
