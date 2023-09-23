@@ -22,7 +22,7 @@ def email_check(shared_dict):
         shared_dict['body'] = new_body
         
         # check every 5 mins
-        time.sleep(300)
+        time.sleep(10)
 
 if __name__ == '__main__':
     with Manager() as manager:
