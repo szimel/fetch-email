@@ -18,6 +18,13 @@ rectangle_surface.fill((255, 255, 255))
 mail_icon = pygame.image.load('images/new_mail.bmp')
 mail_icon = pygame.transform.scale(mail_icon, (width, height))
 
+# Define arrow button dimensions and positions
+arrow_width, arrow_height = 40, 80
+left_arrow_pos = (0, height // 2 - arrow_height // 2)
+right_arrow_pos = (width - arrow_width, height // 2 - arrow_height // 2)
+
+clock = pygame.time.Clock()
+
 def display_email(shared_dict):
     pygame.init()
 
@@ -41,11 +48,6 @@ def display_email(shared_dict):
     # Container to store the last 5 email bodies
     email_container = []
     current_email_index = 0
-
-    # Define arrow button dimensions and positions
-    arrow_width, arrow_height = 40, 80
-    left_arrow_pos = (0, height // 2 - arrow_height // 2)
-    right_arrow_pos = (width - arrow_width, height // 2 - arrow_height // 2)
 
     running = True
 
@@ -84,7 +86,7 @@ def display_email(shared_dict):
                 pygame.quit()
 
         # Check for new emails
-        if shared_dict['body'] and shared_dict['body'] not in email_container:
+        if shared_dict['body'] not in email_container:
             email_displayed = False
             email_container.insert(0, shared_dict['body'])
             if len(email_container) > 5:
@@ -97,7 +99,6 @@ def display_email(shared_dict):
             body_lines = wrapped_body.split('\n')
             body_surfaces = [font_body.render(line, True, BLACK) for line in body_lines]
 
-            # Draw the background and body text on the screen
             if email_displayed:
                 counter += 1
                 rainbow_background(screen, height, width, rainbow_surface, rectangle_surface, counter)
@@ -106,18 +107,23 @@ def display_email(shared_dict):
                 if counter > 50:
                     for i, body_surface in enumerate(body_surfaces):
                         screen.blit(body_surface, (10 + arrow_width, 10 + i*font_body.get_height() - y_offset))
+                
+                # Draw the arrow buttons
+                pygame.draw.polygon(screen, IDK, [(left_arrow_pos[0], height // 2), (left_arrow_pos[0] + arrow_width, left_arrow_pos[1]), (left_arrow_pos[0] + arrow_width, left_arrow_pos[1] + arrow_height)])
+                pygame.draw.polygon(screen, IDK, [(right_arrow_pos[0], right_arrow_pos[1]), (right_arrow_pos[0], right_arrow_pos[1] + arrow_height), (right_arrow_pos[0] + arrow_width, height // 2)])
             else:
+                # Reset the counter and clear the screen with a white background
+                counter = 0
+                screen.fill(WHITE)  # Clear the screen with white color
+                rainbow_surface.fill((0, 0, 0, 0))  # Clear the rainbow_surface with transparent color
+
                 animation_counter += animation_speed
                 y_offset = int(animation_amplitude * math.sin(animation_counter))
                 screen.blit(mail_icon, (0, 0 - y_offset))
-
-            # Draw the arrow buttons
-            pygame.draw.polygon(screen, IDK, [(left_arrow_pos[0], height // 2), (left_arrow_pos[0] + arrow_width, left_arrow_pos[1]), (left_arrow_pos[0] + arrow_width, left_arrow_pos[1] + arrow_height)])
-            pygame.draw.polygon(screen, IDK, [(right_arrow_pos[0], right_arrow_pos[1]), (right_arrow_pos[0], right_arrow_pos[1] + arrow_height), (right_arrow_pos[0] + arrow_width, height // 2)])
 
             if counter > 10000:
                 counter = 80
 
             # Update the display
             pygame.display.flip()
-            pygame.time.Clock().tick(30)
+            clock.tick(30)
