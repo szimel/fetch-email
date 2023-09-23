@@ -14,7 +14,7 @@ rectangle_surface = pygame.Surface((width, height // 2), pygame.SRCALPHA)
 rectangle_surface.fill((255, 255, 255))
         
 # Load images once outside of the display_email function
-mail_icon = pygame.image.load('images/new_mail.jpeg')
+mail_icon = pygame.image.load('images/new_mail.bmp')
 mail_icon = pygame.transform.scale(mail_icon, (width, height))
 
 
@@ -48,7 +48,7 @@ def display_email(shared_dict):
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
 
-    counter = -10
+    counter = 0
     
     while running:
         for event in pygame.event.get():

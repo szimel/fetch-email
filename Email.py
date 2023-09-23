@@ -1,4 +1,8 @@
 import time
+# import os
+# os.chdir('/home/kamandtrix/Desktop/fetch-email/')
+
+
 from multiprocessing import Process, Manager
 from background.display_email import display_email
 from utils.email_utils import get_body, get_subject, get_email

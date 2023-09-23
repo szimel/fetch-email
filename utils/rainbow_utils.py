@@ -10,7 +10,7 @@ rain_right = []
 rain_left = []
 
 # Load the heart and cloud images
-heart_image = pygame.image.load('images/test_heart2.png')
+heart_image = pygame.image.load('images/test_heart2.bmp')
 heart_image = pygame.transform.scale(heart_image, (22, 22))
 
 def colorize(image, new_color):
@@ -31,6 +31,8 @@ colorized_hearts = {color: colorize(heart_image, color) for color in heart_color
 def rainbowAnimation(surface, counter, width, height):
     for i, color in enumerate(colors):
         pygame.draw.circle(surface, color, (width//2, height//2), (counter * 3) + (len(colors) - i - 1) * 30)
+
+
 
 
 def rainAnimation(screen, counter):
