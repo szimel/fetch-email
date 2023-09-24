@@ -5,30 +5,28 @@ import time
 
 from multiprocessing import Process, Manager
 from background.display_email import display_email
-from utils.email_utils import get_body, get_subject, get_email
+from utils.email_utils import get_email_body_and_image
 
 def email_check(shared_dict):
     while True:
-        # Extracting the latest email using the util function
-        email = get_email()
+        # Extracting the latest email's body, image path, and email ID
+        body, image_path = get_email_body_and_image()
 
-        # Extracting the body using the util functions
-        new_body = get_body(email)
-        new_subject = get_subject(email)
+        # if we have a new email
+        if body is None: 
+            continue 
+        else: 
+            body = body.replace('\n', ' ').replace('\r', ' ')
+            shared_dict['body'] = body
+            shared_dict['image_path'] = image_path
         
-        new_body = new_body.replace('\n', ' ').replace('\r', ' ')
+        #check every 5 mins
+        time.sleep(10)
 
-        shared_dict['subject'] = new_subject
-        shared_dict['body'] = new_body
-        
-        # check every 5 mins
-        time.sleep(300)
 
 if __name__ == '__main__':
     with Manager() as manager:
-        shared_dict = manager.dict()
-        shared_dict['subject'] = ''
-        shared_dict['body'] = ''
+        shared_dict = manager.dict(body='', image_path=None)
 
         p1 = Process(target=display_email, args=(shared_dict,))
         p2 = Process(target=email_check, args=(shared_dict,))

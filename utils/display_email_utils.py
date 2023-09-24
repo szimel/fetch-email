@@ -1,4 +1,5 @@
-import pygame
+import pygame 
+import os
 
 def render_text_with_border(text, font, text_color, border_color):
     # Render the text in the border color
@@ -11,6 +12,7 @@ def render_text_with_border(text, font, text_color, border_color):
     text_surface = font.render(text, True, text_color)
     border_surface.blit(text_surface, (2, 2))
     return border_surface
+
 
 def wrap_text(text, font, max_width):
     words = text.split(' ')
