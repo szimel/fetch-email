@@ -117,8 +117,7 @@ def display_email(shared_dict):
         if new_email not in email_container:
             email_displayed = False
             email_container.insert(0, new_email)
-            if len(email_container) > 1:
-                print('popped!')
+            if len(email_container) > 5:
                 email_container.pop()
                 # cleanup_images(email_container, image_directory)
             current_email_index = 0

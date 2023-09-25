@@ -21,7 +21,7 @@ def email_check(shared_dict):
             shared_dict['image_path'] = image_path
         
         #check every 5 mins
-        time.sleep(10)
+        time.sleep(300)
 
 
 if __name__ == '__main__':
