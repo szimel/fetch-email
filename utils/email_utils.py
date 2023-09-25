@@ -3,6 +3,7 @@ import mimetypes
 import time
 import imaplib
 import email
+from wand.image import Image
 
 username = "kamandtrix@gmail.com"
 password = "svmfjncazrvivceo"
@@ -67,7 +68,6 @@ def get_email_body_and_image():
     return body, image_path
 
 def save_image(image_data, filename):
-
     # Determine the base directory dynamically
     base_dir = os.path.dirname(os.path.abspath(__file__))
     
@@ -78,12 +78,21 @@ def save_image(image_data, filename):
 
     # Generate a unique filename based on the original filename
     base, ext = os.path.splitext(filename)
-    unique_filename = base + "_" + str(int(time.time())) + ext  # appending timestamp
+    unique_filename = base + "_" + str(int(time.time()))  # appending timestamp
 
-    image_path = os.path.join(img_dir, unique_filename)
-    
-    # Write the image data to the file
-    with open(image_path, 'wb') as f:
+    # Save the original image temporarily
+    temp_image_path = os.path.join(img_dir, unique_filename + ext)
+    with open(temp_image_path, 'wb') as f:
         f.write(image_data)
 
-    return image_path
+    # Convert the image to BMP format
+    output_image_path = os.path.join(img_dir, unique_filename + '.bmp')
+    with Image(filename=temp_image_path) as img:
+        img.format = 'bmp'
+        img.save(filename=output_image_path)
+
+    # Remove the temporary original image
+    os.remove(temp_image_path)
+
+    return output_image_path
+
